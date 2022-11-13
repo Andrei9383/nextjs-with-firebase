@@ -8,6 +8,5 @@ export const Layout = ({ children }) => (
     }}
   >
     {children}
-    <Content />
   </Box>
 );

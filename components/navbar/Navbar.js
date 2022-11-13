@@ -1,8 +1,13 @@
 import { Navbar, Link, Text, Avatar, Dropdown } from "@nextui-org/react";
 import { Layout } from "./Layout.js";
 import { AcmeLogo } from "./AcmeLogo.js";
+import { useUser } from "@/lib/firebase/useUser";
+import { Button } from "@nextui-org/react";
 
 export default function NavbarComponent() {
+    const { user, logout } = useUser();
+
+
   const collapseItems = [
     "Profile",
     "Dashboard",
@@ -18,7 +23,7 @@ export default function NavbarComponent() {
 
   return (
     <Layout>
-      <Navbar isBordered variant="sticky">
+      <Navbar isBordered variant="floating">
         <Navbar.Toggle showIn="xs" />
         <Navbar.Brand
           css={{
@@ -39,7 +44,7 @@ export default function NavbarComponent() {
           variant="highlight-rounded"
         >
           <Navbar.Link href="#">Features</Navbar.Link>
-          <Navbar.Link isActive href="#">
+          <Navbar.Link href="#">
             Customers
           </Navbar.Link>
           <Navbar.Link href="#">Pricing</Navbar.Link>
@@ -61,21 +66,21 @@ export default function NavbarComponent() {
                   as="button"
                   color="secondary"
                   size="md"
-                  src="https://i.pravatar.cc/150?u=a042581f4e29026704d"
+                  src={user?.profilePic}
                 />
               </Dropdown.Trigger>
             </Navbar.Item>
             <Dropdown.Menu
               aria-label="User menu actions"
               color="secondary"
-              onAction={(actionKey) => console.log({ actionKey })}
+              onAction={(actionKey) => {if(actionKey == "logout") {logout()}}}
             >
               <Dropdown.Item key="profile" css={{ height: "$18" }}>
                 <Text b color="inherit" css={{ d: "flex" }}>
                   Signed in as
                 </Text>
                 <Text b color="inherit" css={{ d: "flex" }}>
-                  zoey@example.com
+                  {user?.email}
                 </Text>
               </Dropdown.Item>
               <Dropdown.Item key="settings" withDivider>
@@ -90,8 +95,8 @@ export default function NavbarComponent() {
               <Dropdown.Item key="help_and_feedback" withDivider>
                 Help & Feedback
               </Dropdown.Item>
-              <Dropdown.Item key="logout" withDivider color="error">
-                Log Out
+              <Dropdown.Item key="logout" withDivider color="error" onClick={() => console.log("click")}>
+                Logout
               </Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>
